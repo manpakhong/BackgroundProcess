@@ -1,4 +1,4 @@
-package com.rabbitforever.backgroundprocess;
+package com.rabbitforever.backgroundprocess.activities;
 
 import android.app.ActivityManager;
 import android.content.Context;
@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.rabbitforever.backgroundprocess.R;
 import com.rabbitforever.backgroundprocess.services.ProcessPhotoService;
 
 public class MainActivity extends AppCompatActivity {

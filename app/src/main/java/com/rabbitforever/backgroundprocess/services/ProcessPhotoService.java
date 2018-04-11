@@ -7,13 +7,14 @@ import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
+import com.rabbitforever.backgroundprocess.activities.MyAppActivityB;
 import com.rabbitforever.backgroundprocess.utils.FileUtils;
 
 import java.util.Timer;
 import java.util.TimerTask;
 public class ProcessPhotoService extends Service {
     public int counter=0;
-    public Context ctx;
+    private Context ctx;
     public ProcessPhotoService(Context applicationContext) {
         super();
         ctx = applicationContext;
@@ -59,12 +60,15 @@ public class ProcessPhotoService extends Service {
     public void initializeTimerTask() {
         timerTask = new TimerTask() {
             public void run() {
+
                 try {
+                    ctx = MyAppActivityB.getContext();
                     FileUtils fileUtils;
                     ctx.getPackageManager();
                     fileUtils = FileUtils.getInstance();
                     String currentDir =  fileUtils.getCurrentDirectory(ctx);
-                    Log.i("in timer", "in timer ++++  "+ (counter++) + ", currentDir: " + currentDir);
+                    boolean isDirectoryExisted = fileUtils.isDirectoryExisted(currentDir);
+                    Log.i("in timer", "in timer ++++  "+ (counter++) + ", currentDir: " + currentDir + ",isDirExisted:" + isDirectoryExisted);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

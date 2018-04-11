@@ -1,11 +1,11 @@
-package com.rabbitforever.backgroundprocess.systems;
+package com.rabbitforever.backgroundprocess.activities;
 
 import android.app.Application;
 import android.content.Context;
 
-public class MyApp extends Application {
-    private static MyApp instance;
-    public static MyApp getInstance(){
+public class MyAppActivityB extends Application {
+    private static MyAppActivityB instance;
+    public static MyAppActivityB getInstance(){
         return instance;
     }
     public static Context getContext(){
