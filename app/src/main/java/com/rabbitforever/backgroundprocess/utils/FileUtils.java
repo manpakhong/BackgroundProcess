@@ -1,9 +1,14 @@
 package com.rabbitforever.backgroundprocess.utils;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
+
+import com.rabbitforever.backgroundprocess.activities.MainActivity;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -140,12 +145,12 @@ public class FileUtils {
         return stringList;
     }
 
-    public void traverseDir(String fileInString, List<File> fileList){
+
+    public synchronized void traverseDir(String fileInString, List<File> fileList){
         try {
             File file = new File(fileInString);
-            if (file != null){
-                traverseDir(file, fileList);
-            }
+            traverseDir(file, fileList);
+
         } catch (Exception e) {
             Log.e(this.getClass().getSimpleName(),
                     ".traverseDir() -fileInString=" + fileInString + ",fileList="+ fileList, e);
@@ -154,14 +159,16 @@ public class FileUtils {
 
         }
     }
-    public void traverseDir(File dir, List<File> fileList){
+    public synchronized void traverseDir(File dir, List<File> fileList){
         try {
-            for (File fileEntry: dir.listFiles()){
-                if (fileEntry.isDirectory()) {
-                    traverseDir(fileEntry, fileList);
-                } else {
-                    fileList.add(fileEntry);
+            if (dir != null && dir.isDirectory() && dir.listFiles() != null) {
+                for (File fileEntry : dir.listFiles()) {
+                    if (fileEntry.isDirectory()) {
+                        traverseDir(fileEntry, fileList);
+                    } else {
+                        fileList.add(fileEntry);
 
+                    }
                 }
             }
         } catch (Exception e) {

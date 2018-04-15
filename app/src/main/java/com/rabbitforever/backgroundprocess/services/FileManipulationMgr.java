@@ -27,7 +27,7 @@ public class FileManipulationMgr{
         }
 
     }
-    public List<File> getFileListRecrusively(String folderPath) throws Exception {
+    public List<File> getFileListRecursively(String folderPath) throws Exception {
         List<File> fileList = null;
         try {
             String folderRootFromSourceToUsb = folderPath;
