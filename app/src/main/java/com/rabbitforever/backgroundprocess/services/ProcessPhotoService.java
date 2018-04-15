@@ -10,6 +10,8 @@ import android.util.Log;
 import com.rabbitforever.backgroundprocess.activities.MyAppActivityB;
 import com.rabbitforever.backgroundprocess.utils.FileUtils;
 
+import java.io.File;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 public class ProcessPhotoService extends Service {
@@ -58,16 +60,22 @@ public class ProcessPhotoService extends Service {
      * it sets the timer to print the counter every x seconds
      */
     public void initializeTimerTask() {
+        final String fileRootPath = "/storage/emulated/0/DCIM/UCam/USpyCam";
         timerTask = new TimerTask() {
             public void run() {
-
+                FileManipulationMgr fileManipulationMgr = null;
                 try {
+                    fileManipulationMgr = new FileManipulationMgr();
                     ctx = MyAppActivityB.getContext();
                     FileUtils fileUtils;
                     ctx.getPackageManager();
                     fileUtils = FileUtils.getInstance();
                     String currentDir =  fileUtils.getCurrentDirectory(ctx);
-                    boolean isDirectoryExisted = fileUtils.isDirectoryExisted(currentDir);
+                    boolean isDirectoryExisted = fileUtils.isDirectoryExisted(fileRootPath);
+                    if (isDirectoryExisted){
+                        List<File> fileList = fileManipulationMgr.getFileListRecrusively(fileRootPath);
+
+                    }
                     Log.i("in timer", "in timer ++++  "+ (counter++) + ", currentDir: " + currentDir + ",isDirExisted:" + isDirectoryExisted);
                 } catch (Exception e) {
                     e.printStackTrace();
