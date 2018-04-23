@@ -66,7 +66,7 @@ public class ProcessPhotoService extends Service {
         initializeTimerTask();
 
         //schedule the timer, to wake up every 1 second
-        timer.schedule(timerTask, 1000, 1000); //
+        timer.schedule(timerTask, 10000, 10000); //
     }
 
     /**

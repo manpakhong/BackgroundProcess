@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -10,10 +10,36 @@
         android:id="@+id/txtMessage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:text="Hello World!" />
 
-</android.support.constraint.ConstraintLayout>
+    <EditText
+        android:id="@+id/edNumberInput"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="167dp"
+        android:layout_toEndOf="@+id/txtMessage"
+        android:hint="Type a number"
+        android:inputType="number"
+        android:maxLength="19"
+        android:selectAllOnFocus="true"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <Button
+        android:id="@+id/btIsPrime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/edNumberInput"
+        android:layout_below="@+id/edNumberInput"
+        android:onClick="CheckPrimeClick"
+        android:text="Is It a Prime?" />
+
+    <TextView
+        android:id="@+id/tvPrimeResult"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/btIsPrime"
+        android:layout_below="@+id/btIsPrime"
+        android:hint="Click 'Is It a Prime?'"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+</RelativeLayout>
