@@ -20,7 +20,7 @@ import java.util.TimerTask;
 
 public class ProcessPhotoTimeTask extends TimerTask {
     private Context ctx;
-    private MainActivity mainActivity;
+    MainActivity mainActivity;
     private final String fileRootPath = "/storage/emulated/0/DCIM";
     private Handler handler;
     private Timer timer=new Timer();//Used for a delay to provide user feedback
@@ -30,26 +30,14 @@ public class ProcessPhotoTimeTask extends TimerTask {
         this.mainActivity = mainActivity;
         handler = new Handler(callback);
         int seconds = 3;
-        timer.schedule(new SmallDelay(), seconds*1000);
+        timer.schedule(new SmallDelay(handler), seconds*1000);
     }
     Handler.Callback callback = new Handler.Callback() {
         public boolean handleMessage(Message msg) {
-            TextView txtView =  mainActivity.findViewById(R.id.txtMessage);
-            txtView.setText(txtView.getText());
-            return true;
-        }
-    };
+            FileManipulationMgr fileManipulationMgr = null;
+            try {
 
-    class SmallDelay extends TimerTask {
-        @Override
-        public void run() {
-            handler.sendEmptyMessage(0);
-        }
-    }
-    @Override
-    public void run() {
-        FileManipulationMgr fileManipulationMgr = null;
-        try {
+
             fileManipulationMgr = new FileManipulationMgr();
             ctx = MyAppActivityB.getContext();
             FileUtils fileUtils;
@@ -59,11 +47,46 @@ public class ProcessPhotoTimeTask extends TimerTask {
             boolean isDirectoryExisted = fileUtils.isDirectoryExisted(fileRootPath);
             if (isDirectoryExisted){
                 List<File> fileList = fileManipulationMgr.getFileListRecursively(fileRootPath);
-                TextView txtView = this.mainActivity.findViewById(R.id.txtMessage);
-                txtView.setText("oh! no!");
-
+                TextView txtView = mainActivity.findViewById(R.id.txtMessage);
+                String fileString = "";
+                for (int i = 0; i < fileList.size(); i++) {
+                    File file = fileList.get(i);
+                    if (i > 0){
+                        fileString += "\n";
+                    }
+                    fileString += file.getAbsolutePath();
+                }
+                txtView.setText(fileString);
             }
-            Log.i("in timer", "" + isDirectoryExisted);
+                Log.i("in timer", "" + isDirectoryExisted);
+            } catch (Exception e){
+                e.printStackTrace();
+            }
+            return true;
+        }
+    };
+
+
+    @Override
+    public void run() {
+        FileManipulationMgr fileManipulationMgr = null;
+        try {
+//            fileManipulationMgr = new FileManipulationMgr();
+//            ctx = MyAppActivityB.getContext();
+//            FileUtils fileUtils;
+//            ctx.getPackageManager();
+//            fileUtils = FileUtils.getInstance();
+//            String currentDir =  fileUtils.getCurrentDirectory(ctx);
+//            boolean isDirectoryExisted = fileUtils.isDirectoryExisted(fileRootPath);
+//            if (isDirectoryExisted){
+//                List<File> fileList = fileManipulationMgr.getFileListRecursively(fileRootPath);
+//                TextView txtView = this.mainActivity.findViewById(R.id.txtMessage);
+//                txtView.setText("oh! no!");
+//
+//            }
+//            Log.i("in timer", "" + isDirectoryExisted);
+            int seconds = 1;
+            timer.schedule(new SmallDelay(handler), seconds*1000);
         } catch (Exception e) {
             e.printStackTrace();
         }
