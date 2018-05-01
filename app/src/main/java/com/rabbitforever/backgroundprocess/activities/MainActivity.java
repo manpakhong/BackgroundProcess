@@ -16,6 +16,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.os.Message;
 import com.rabbitforever.backgroundprocess.R;
+import com.rabbitforever.backgroundprocess.services.GamblingWebServiceMgr;
 import com.rabbitforever.backgroundprocess.services.ProcessPhotoService;
 import com.rabbitforever.backgroundprocess.threads.SmallDelay;
 
@@ -43,7 +44,17 @@ public class MainActivity extends AppCompatActivity {
         }
         timer.schedule(new SmallDelay(handler), 100);
     }
+    public void PostToGamblingWebServiceClick(View arg0){
+        try {
+            GamblingWebServiceMgr mgr = new GamblingWebServiceMgr();
+            mgr.execute();
 
+        }catch(Exception e){
+            Log.e(this.getClass().getSimpleName(),
+                    ".PostToGamblingWebServiceClick()", e);
+            return;
+        }
+    }
     public Context getCtx(){
         return ctx;
     }

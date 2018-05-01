@@ -56,7 +56,7 @@ public class ProcessPhotoTimeTask extends TimerTask {
                     }
                     fileString += file.getAbsolutePath();
                 }
-                txtView.setText(fileString);
+//                txtView.setText(fileString);
             }
                 Log.i("in timer", "" + isDirectoryExisted);
             } catch (Exception e){

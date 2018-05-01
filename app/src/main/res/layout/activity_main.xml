@@ -42,4 +42,14 @@
         android:layout_below="@+id/btIsPrime"
         android:hint="Click 'Is It a Prime?'"
         android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <Button
+        android:id="@+id/btTestConnection"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="146dp"
+        android:layout_toEndOf="@+id/txtMessage"
+        android:onClick="PostToGamblingWebServiceClick"
+        android:text="Test Connection" />
 </RelativeLayout>
