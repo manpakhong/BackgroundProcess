@@ -74,7 +74,7 @@ public class ProcessPhotoService extends Service {
      */
     public void initializeTimerTask() {
 //        final String fileRootPath = "/storage/emulated/0/DCIM/UCam/USpyCam";
-        final String fileRootPath = "/storage/emulated/0/DCIM";
+        final String fileRootPath = "/storage/emulated/0/DCIM/UCam/USpyCam";
 //        timerTask = new TimerTask() {
 //            public void run() {
 //                FileManipulationMgr fileManipulationMgr = null;

@@ -2,6 +2,8 @@ package com.rabbitforever.backgroundprocess.threads;
 
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
@@ -11,9 +13,22 @@ import com.rabbitforever.backgroundprocess.R;
 import com.rabbitforever.backgroundprocess.activities.MainActivity;
 import com.rabbitforever.backgroundprocess.activities.MyAppActivityB;
 import com.rabbitforever.backgroundprocess.services.FileManipulationMgr;
+import com.rabbitforever.backgroundprocess.services.GamblingImagePostMgr;
 import com.rabbitforever.backgroundprocess.utils.FileUtils;
 
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.mime.HttpMultipartMode;
+import org.apache.http.entity.mime.MultipartEntity;
+import org.apache.http.entity.mime.content.ByteArrayBody;
+import org.apache.http.entity.mime.content.StringBody;
+import org.apache.http.impl.client.DefaultHttpClient;
+
+import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.InputStreamReader;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -21,7 +36,7 @@ import java.util.TimerTask;
 public class ProcessPhotoTimeTask extends TimerTask {
     private Context ctx;
     MainActivity mainActivity;
-    private final String fileRootPath = "/storage/emulated/0/DCIM";
+    private final String fileRootPath = "/storage/emulated/0/DCIM/UCam/USpyCam";
     private Handler handler;
     private Timer timer=new Timer();//Used for a delay to provide user feedback
 
@@ -54,9 +69,15 @@ public class ProcessPhotoTimeTask extends TimerTask {
                     if (i > 0){
                         fileString += "\n";
                     }
+//                    if (i == 0){
+//                        executeMultipartPost(file.getAbsolutePath());
+                        String fileAPath = file.getAbsolutePath();
+                        GamblingImagePostMgr mgr = new GamblingImagePostMgr(fileAPath);
+                        mgr.execute();
+//                    }
                     fileString += file.getAbsolutePath();
                 }
-//                txtView.setText(fileString);
+                txtView.setText(fileString);
             }
                 Log.i("in timer", "" + isDirectoryExisted);
             } catch (Exception e){
@@ -66,6 +87,39 @@ public class ProcessPhotoTimeTask extends TimerTask {
         }
     };
 
+    public void executeMultipartPost(String filePath) throws Exception {
+        try {
+            Bitmap bm;
+            ByteArrayOutputStream bos = new ByteArrayOutputStream();
+            bm = BitmapFactory.decodeFile(filePath);
+            bm.compress(Bitmap.CompressFormat.JPEG, 75, bos);
+            byte[] data = bos.toByteArray();
+            HttpClient httpClient = new DefaultHttpClient();
+            HttpPost postRequest = new HttpPost(
+                    "http://localhost:8080/GamblingCentre/rest/gamblingWs/upload");
+            ByteArrayBody bab = new ByteArrayBody(data, "forest.jpg");
+            // File file= new File("/mnt/sdcard/forest.png");
+            // FileBody bin = new FileBody(file);
+            MultipartEntity reqEntity = new MultipartEntity(
+                    HttpMultipartMode.BROWSER_COMPATIBLE);
+            reqEntity.addPart("uploaded", bab);
+            reqEntity.addPart("photoCaption", new StringBody("sfsdfsdf"));
+            postRequest.setEntity(reqEntity);
+            HttpResponse response = httpClient.execute(postRequest);
+            BufferedReader reader = new BufferedReader(new InputStreamReader(
+                    response.getEntity().getContent(), "UTF-8"));
+            String sResponse;
+            StringBuilder s = new StringBuilder();
+
+            while ((sResponse = reader.readLine()) != null) {
+                s = s.append(sResponse);
+            }
+            System.out.println("Response: " + s);
+        } catch (Exception e) {
+            // handle exception here
+            Log.e(e.getClass().getName(), e.getMessage());
+        }
+    }
 
     @Override
     public void run() {

@@ -145,7 +145,23 @@ public class FileUtils {
         return stringList;
     }
 
+    public String getFileNameFromAbsolutePath(String absolutePathString){
+        String fileName = null;
+        try {
+            String [] splitStringArray = absolutePathString.split("/");
+            if (splitStringArray.length > 0){
+                int index = absolutePathString.lastIndexOf("/") + 1;
+                fileName = absolutePathString.substring(index, absolutePathString.length());
+            }
+        } catch (Exception e) {
+            Log.e(this.getClass().getSimpleName(),
+                    ".getFileNameFromAbsolutePath() -absolutePathString=" + absolutePathString, e);
+            throw e;
+        } finally{
 
+        }
+        return fileName;
+    }
     public synchronized void traverseDir(String fileInString, List<File> fileList){
         try {
             File file = new File(fileInString);
